@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 3000;
 const connectToDatabase = require("./db/dbConnection")
 const registerRoute = require("./routes/userRoutes")
 const loginRoute = require("./routes/userRoutes")
+const userRoute = require("./routes/userRoutes")
 
 
 //middleware
@@ -23,6 +24,7 @@ app.get("/", (req,res) => {
 //routes
 app.use("/", registerRoute)
 app.use("/", loginRoute)
+app.use("/", userRoute)
 
 
 app.listen(PORT,() => {
