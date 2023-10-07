@@ -26,7 +26,7 @@ exports.registerUser = async (req, res) => {
     const newUser = new User({ username, email, password: hashedPassword })
     await newUser.save()
 
-    res.status(201).json({ message: "user created successfully"})
+    res.status(201).json({ message: "user created successfully", success: true })
 
   } catch (error) {
     console.error(error); // Log the actual error for debugging
@@ -42,7 +42,7 @@ exports.loginUser = async (req, res) => {
 
     const user = await User.findOne({ email })
 
-    if(email === "" || password === ""){
+    if (email === "" || password === "") {
       return res.status(401).json({ error: "All input fields require" })
     }
 
@@ -56,11 +56,11 @@ exports.loginUser = async (req, res) => {
     }
 
     //issue token 
-    const token = jwt.sign({ username: user.username }, secret, {
+    const token = jwt.sign({ username: user.username, useremail: user.email }, secret, {
       expiresIn: "1h"
     })
 
-    res.status(201).json({ message: "user logged in successfully", token })
+    res.status(201).json({ message: "user logged in successfully", token, success: true })
 
   } catch (error) {
     console.error(error);
@@ -70,12 +70,12 @@ exports.loginUser = async (req, res) => {
 
 
 
-exports.getAllUsers = async (req,res)=> {
-try {
-   const users = await User.find({})
-   res.status(200).json(users)
-} catch (error) {
-  console.error(error);
-   res.status(500).json({ error: "Internal server error" });
-}
+exports.userDetails = async (req, res) => {
+  try {
+    const user = req.user;
+    res.json({ user })
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 }
