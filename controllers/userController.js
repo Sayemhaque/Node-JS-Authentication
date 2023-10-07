@@ -25,8 +25,8 @@ exports.registerUser = async (req, res) => {
     //create new user
     const newUser = new User({ username, email, password: hashedPassword })
     await newUser.save()
-    
-    res.status(201).json({ message: "user created successfully", token, newUser })
+
+    res.status(201).json({ message: "user created successfully"})
 
   } catch (error) {
     console.error(error); // Log the actual error for debugging
